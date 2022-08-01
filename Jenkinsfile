@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout and Compile') {
             steps {
-                echo 'Compiling..'
+                sh 'mvn clean package'
             }
         }
         stage('Unit Tests') {
