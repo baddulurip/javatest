@@ -2,14 +2,24 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Checkout and Compile') {
             steps {
-                echo 'Building..'
+                echo 'Compiling..'
             }
         }
-        stage('Test') {
+        stage('Unit Tests') {
             steps {
                 echo 'Testing..'
+            }
+        }
+        stage('Static Code analysis') {
+            steps {
+                echo 'Code analysis....'
+            }
+        }
+        stage('Package') {
+            steps {
+                echo 'Package....'
             }
         }
         stage('Deploy') {
