@@ -67,7 +67,9 @@ pipeline {
             deleteDir() /* clean up our workspace */
         }
         success {
-            echo 'I succeeded!'
+             mail to: 'baddulurip@gmail.com',
+             subject: "Build Succeded: ${currentBuild.fullDisplayName}",
+             body: "Project build: ${env.JOB_NAME}"
         }
         unstable {
             echo 'I am unstable :/'
