@@ -55,7 +55,7 @@ pipeline {
                 echo 'Deploying....'
             }
             post {
-                failure {
+                failure{
                     echo 'Production Build Failed'
                 }
             }
@@ -67,9 +67,7 @@ pipeline {
             deleteDir() /* clean up our workspace */
         }
         success {
-             mail to: 'pbadduluri@gmail.com',
-             subject: "Build Succeded: ${currentBuild.fullDisplayName}",
-             body: "Project build: ${env.JOB_NAME}"
+            echo 'I succeeded!'
         }
         unstable {
             echo 'I am unstable :/'
