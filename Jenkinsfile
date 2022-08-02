@@ -67,7 +67,7 @@ pipeline {
             deleteDir() /* clean up our workspace */
         }
         success {
-             mail to: 'baddulurip@gmail.com',
+             mail to: 'pbadduluri@gmail.com',
              subject: "Build Succeded: ${currentBuild.fullDisplayName}",
              body: "Project build: ${env.JOB_NAME}"
         }
