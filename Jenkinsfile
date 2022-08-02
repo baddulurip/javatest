@@ -5,30 +5,80 @@ pipeline {
     }
 
     stages {
-        stage('Checkout and Compile') {
+        stage('Build') {
             steps {
                 sh 'mvn clean package'
             }
         }
-        stage('Unit Tests') {
+        stage('Test') {
             steps {
-                echo 'Testing..'
+                echo "${env.BUILD_NUMBER}"
+                echo "${env.BUILD_URL}"
             }
         }
-        stage('Static Code analysis') {
+        stage('Code Quality analysis') {
             steps {
                 echo 'Code analysis....'
             }
         }
-        stage('Package') {
+        stage('Deploy to Dev') {
             steps {
-                echo 'Package....'
+                echo 'Deploying to Dev....'
             }
         }
-        stage('Deploy') {
+        stage('Deploy to QA') {
+            steps {
+                echo 'Deploying to QA....'
+            }
+        }
+        stage('Deploy to UAT') {
+            steps {
+                echo 'Deploying to UAT....'
+            }
+        }
+        stage('Deploy to Per-prod') {
+            steps {
+                echo 'Staging....'
+            }
+        }
+        stage('Prod Approval') {
+            steps {
+                script {
+                    if(env.BRANCH_NAME == "master") {
+                        input("Proceed Prod Deployment?")
+                    }
+                }
+            }
+        }
+        stage('Deploy to Prod') {
             steps {
                 echo 'Deploying....'
             }
+            post {
+                failure {
+                    echo 'Production Build Failed'
+                }
+            }
+        }
+    }
+    post {
+        always {
+            echo 'One way or another, I have finished'
+            deleteDir() /* clean up our workspace */
+        }
+        success {
+            echo 'I succeeded!'
+        }
+        unstable {
+            echo 'I am unstable :/'
+        }
+        failure {
+             mail to: 'baddulurip@gmail.com',
+             subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
+             body: "Something is wrong with ${env.BUILD_URL}"
+        }
+        changed {
+            echo 'Things were different before...'
         }
     }
 }
